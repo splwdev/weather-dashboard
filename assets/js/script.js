@@ -43,24 +43,7 @@ var cityName = localStorage.getItem("cityname");
 
 var cityArr = [];
 
-// var searchCity = $(searchInput).val();
-// console.log(searchCity);
-
-
 const APIKey = "5350d0f7b1fc4bfd19dd68ba95e8ac1b";
-
-// function currentWeather() {
-//     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + APIKey;
-
-//     $.ajax({
-//         url: queryURL,
-//         method: "GET"
-//     }).then(function (response) {
-//         console.log(response);
-//     });
-// };
-
-// currentWeather();
 
 $(searchButton).on("click", function (event) {
 
@@ -77,13 +60,35 @@ $(searchButton).on("click", function (event) {
         method: "GET"
     }).then(function (response) {
         console.log(response);
-        var currentDate = moment.unix(response.dt).format("(DD/MM/YYYY)");
+        var currentDate = moment.unix(response.dt + response.timezone).format("(DD/MM/YYYY) HH:mm:ss");
         var cityCurrent = $("<h1>").text(response.name + " " + currentDate);
         var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png");
-        var currentTemp = $("<p>").text("Temperature: " + response.main.temp + " Degrees Celsius");
+        var currentTemp = $("<p>").text("Temperature: " + response.main.temp + " °C");
         var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
         var windSpeed = $("<p>").text("Wind Speed: " + response.wind.speed + "m/s");
         $(currentWeather).append(cityCurrent, currentImage, currentTemp, humidity, windSpeed);
+    });
+
+    var fqueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + "&appid=" + APIKey + "&units=metric";
+    $.ajax({
+        url: fqueryURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+        var forecastRow = $("<div>").addClass("row").attr("id", "forecastRow");
+        $(forecast).append(forecastRow);
+        for (i = 0; i < 5; i++) {
+            var localDate = moment.unix(response.list[((i + 1) * 8) - 1].dt + response.city.timezone).format("DD-MM-YYYY");
+            console.log(localDate);
+            var forecastCard = $("<div>").addClass("col-sm-2 bg-primary");
+            var forecastDate = $("<h2>").text(localDate);
+            var forecastImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png");
+            var forecastTemp = $("<p>").text("Temperature: " + response.list[i].main.temp + " °C");
+            var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%");
+            var forecastWindspeed = $("<p>").text("Wind Speed: " + response.list[i].wind.speed + "m/s");
+            $(forecastCard).append(forecastDate, forecastImage, forecastTemp, forecastHumidity, forecastWindspeed);
+            $(forecastRow).append(forecastCard);
+        }
     });
     
 });
