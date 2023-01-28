@@ -51,9 +51,6 @@ var cityArr = [];
 const APIKey = "5350d0f7b1fc4bfd19dd68ba95e8ac1b";
 
 var searchCity = "";
-// Here we grab the text from the input box
-
-
 
 $(searchButton).on("click", function (event) {
     event.preventDefault();
@@ -63,6 +60,15 @@ $(searchButton).on("click", function (event) {
     getCurrentWeather();
     getForecast();
 });
+
+$("#history").on("click", "button", function (event) {
+    event.preventDefault();
+    var cityBtn = $(event.target);
+    searchCity = cityBtn.attr("id");
+    console.log(searchCity);
+    getCurrentWeather();
+    getForecast();
+})
 
 function getCurrentWeather() {
     $(currentWeather).empty();
@@ -108,9 +114,8 @@ function getForecast() {
 
 function renderButtons() {
    $("#history").empty();
-   // YOUR CODE GOES HERE
    for (i = 0; i < cityArr.length; i++) {
-     var cityBtn = $("<button>").text(cityArr[i]);
+     var cityBtn = $("<button>").text(cityArr[i]).attr("id", cityArr[i]);
      $("#history").append(cityBtn);
    }
  }
