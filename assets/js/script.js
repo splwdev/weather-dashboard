@@ -58,6 +58,8 @@ var searchCity = "";
 $(searchButton).on("click", function (event) {
     event.preventDefault();
     searchCity = $(searchInput).val();
+    cityArr.push(searchCity);
+    renderButtons();
     getCurrentWeather();
     getForecast();
 });
@@ -103,5 +105,14 @@ function getForecast() {
         }
     });
 }
+
+function renderButtons() {
+   $("#history").empty();
+   // YOUR CODE GOES HERE
+   for (i = 0; i < cityArr.length; i++) {
+     var cityBtn = $("<button>").text(cityArr[i]);
+     $("#history").append(cityBtn);
+   }
+ }
 
 
