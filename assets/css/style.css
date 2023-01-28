@@ -1,12 +1,35 @@
+/* Header Settings */
+header {
+    background: rgb(1,15,28);
+    background: linear-gradient(90deg, rgba(1,15,28,1) 0%, rgba(28,23,196,0.9598214285714286) 29%, rgba(68,0,255,1) 73%);
+}
+
+/* Current Weather Settings */
 #today {
     border: 2px solid #000;
 }
 
+/* 5 Day Forecast Settings */
+#forecast h1 {
+    padding-bottom: 15px;
+    margin-left: 20px;
+}
 #forecastCard {
     background-color: #2D3E50;
     color: #FFF;
 }
 
+/* Search Form Settings */
+#search-form {
+    padding: 10px 0 5px 0;
+}
+
+#search-input {
+    border: 1px solid #666;
+    padding: 0 5px;
+}
+
+/* History Settings */
 .weather-hr {
     background-color: #000;
     height: 2px;
@@ -15,3 +38,4 @@
 .btn-history {
     background-color: #d3d3d3;
 }
+
