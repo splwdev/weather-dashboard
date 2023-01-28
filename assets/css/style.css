@@ -1,3 +1,17 @@
 #today {
     border: 2px solid #000;
 }
+
+#forecastCard {
+    background-color: #2D3E50;
+    color: #FFF;
+}
+
+.weather-hr {
+    background-color: #000;
+    height: 2px;
+}
+
+.btn-history {
+    background-color: #d3d3d3;
+}

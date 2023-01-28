@@ -29,7 +29,6 @@
 // TODO
     // Local Storage + Buttons for history
     // CSS styles
-    // event handlers
 
 
 var searchForm = $("#search-form");
@@ -44,7 +43,7 @@ var currentWeather = $("#today");
 
 var forecast = $("#forecast");
 
-var cityName = localStorage.getItem("cityname");
+var cityName = localStorage.getItem("cityName");
 
 var cityArr = [];
 
@@ -52,22 +51,36 @@ const APIKey = "5350d0f7b1fc4bfd19dd68ba95e8ac1b";
 
 var searchCity = "";
 
+cityHistory();
+
 $(searchButton).on("click", function (event) {
     event.preventDefault();
     searchCity = $(searchInput).val();
+    if (cityArr.includes(searchCity) === true) { 
+        alert("You have previously searched for this city, please select it from your history list");
+        return;
+    }
     cityArr.push(searchCity);
+    localStorage.setItem("cityName", JSON.stringify(cityArr));
     renderButtons();
     getCurrentWeather();
     getForecast();
+    searchInput.val("");
 });
 
 $("#history").on("click", "button", function (event) {
     event.preventDefault();
     var cityBtn = $(event.target);
     searchCity = cityBtn.attr("id");
-    console.log(searchCity);
     getCurrentWeather();
     getForecast();
+})
+
+$("#clearBtn").on("click", function () {
+    clearStorage();
+    $("#history").empty();
+    $(currentWeather).empty();
+    $(forecast).empty();
 })
 
 function getCurrentWeather() {
@@ -81,10 +94,10 @@ function getCurrentWeather() {
         var cityCurrent = $("<h1>").text(response.name + " " + currentDate).attr("id", "cityName");
         var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png");
         var currentTemp = $("<p>").text("Temp: " + response.main.temp + " °C");
+        var windSpeed = $("<p>").text("Wind: " + response.wind.speed + "m/s");
         var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
-        var windSpeed = $("<p>").text("Wind Speed: " + response.wind.speed + "m/s");
         $(cityCurrent).append(currentImage);
-        $(currentWeather).append(cityCurrent, currentTemp, humidity, windSpeed);
+        $(currentWeather).append(cityCurrent, currentTemp, windSpeed, humidity);
     });
 }
 
@@ -95,29 +108,41 @@ function getForecast() {
         url: fqueryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
+        var forecastTitle = $("<h1>").text("5-Day Forecast:");
+        var forecastArea = $("<div>").attr("id", "forecastArea").addClass("col-lg-12 d-flex flex-row");
+        $(forecast).append(forecastTitle, forecastArea);
         for (i = 0; i < 5; i++) {
             var localDate = moment.unix(response.list[((i + 1) * 8) - 1].dt + response.city.timezone).format("DD-MM-YYYY");
-            console.log(localDate);
-            var forecastCard = $("<div>").addClass("col-md-2 bg-primary p-3 mx-2").attr("id", "forecastCard");
+            var forecastCard = $("<div>").addClass("col-md-2 p-3 mx-2").attr("id", "forecastCard");
             var forecastDate = $("<h4>").text(localDate);
             var forecastImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png").attr("class", "justify-content-center");
-
             var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + " °C");
+            var forecastWindspeed = $("<p>").text("Wind: " + response.list[i].wind.speed + "m/s");
             var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%");
-            var forecastWindspeed = $("<p>").text("Wind Speed: " + response.list[i].wind.speed + "m/s");
-            $(forecastCard).append(forecastDate, forecastImage, forecastTemp, forecastHumidity, forecastWindspeed);
-            $(forecast).append(forecastCard);
+            $(forecastCard).append(forecastDate, forecastImage, forecastTemp, forecastWindspeed, forecastHumidity);
+            $(forecastArea).append(forecastCard);
         }
     });
 }
 
 function renderButtons() {
-   $("#history").empty();
-   for (i = 0; i < cityArr.length; i++) {
-     var cityBtn = $("<button>").text(cityArr[i]).attr("id", cityArr[i]);
-     $("#history").append(cityBtn);
-   }
- }
+    $("#history").empty();
+    for (i = 0; i < cityArr.length; i++) {
+        var cityBtn = $("<button>").text(cityArr[i]).attr("id", cityArr[i]).addClass("btn btn-history my-1");
+        $("#history").append(cityBtn);
+    }
+}
+ 
+function cityHistory() {
+    var searchHistory = JSON.parse(localStorage.getItem("cityName"));
+    if (searchHistory !== null) {
+        cityArr = searchHistory;
+    }
+    renderButtons();
+}
+
+function clearStorage() {
+    window.localStorage.clear();
+}
 
 
