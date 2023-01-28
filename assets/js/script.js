@@ -95,7 +95,7 @@ function getCurrentWeather() {
     }).then(function (response) {
             var currentDate = moment.unix(response.dt + response.timezone).format("(DD/MM/YYYY)");
             var cityCurrent = $("<h1>").text(((response.name).charAt(0).toUpperCase() + (response.name).slice(1)) + " " + currentDate).attr("id", "cityName");
-            var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png");
+            var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png");
             var currentTemp = $("<p>").text(" Temp: " + response.main.temp + " °C").attr("class", "wi wi-thermometer");
             var windSpeed = $("<p>").text(" Wind: " + response.wind.speed + "m/s").attr("class", "wi wi-strong-wind");
             var humidity = $("<p>").text(" Humidity: " + response.main.humidity + "%").attr("class", "wi wi-humidity");
@@ -120,7 +120,7 @@ function getForecast() {
             var localDate = moment.unix(response.list[((i + 1) * 8) - 1].dt + response.city.timezone).format("DD-MM-YYYY");
             var forecastCard = $("<div>").addClass("col-md-2 p-3 mx-2 rounded").attr("id", "forecastCard");
             var forecastDate = $("<h4>").text(localDate);
-            var forecastImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png").attr("class", "justify-content-center");
+            var forecastImage = $("<img>").attr("src", "https://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png").attr("class", "justify-content-center");
             var forecastTemp = $("<p>").text(" Temp: " + response.list[i].main.temp + " °C").attr("class", "wi wi-thermometer");
             var forecastWindspeed = $("<p>").text(" Wind: " + response.list[i].wind.speed + "m/s").attr("class", "wi wi-strong-wind");
             var forecastHumidity = $("<p>").text(" Humidity: " + response.list[i].main.humidity + "%").attr("class", "wi wi-humidity");
