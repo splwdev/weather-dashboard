@@ -182,6 +182,7 @@ Project Link: [https://github.com/splwdev/weather-dashboard](https://github.com/
 
 * [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 * [EDX Skills for Life Bootcamp](https://skillsforlife.edx.org/)
+* [Weather Icons](http://erikflowers.github.io/weather-icons/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -27,7 +27,6 @@
 // button to clear localstorage
 
 // TODO
-    // upper and lower case letters for city names
     // add checks if city name isnt found in openweathermap db
 
 // Global variables to be used as part of the application
@@ -94,14 +93,14 @@ function getCurrentWeather() {
         url: cwqueryURL,
         method: "GET"
     }).then(function (response) {
-        var currentDate = moment.unix(response.dt + response.timezone).format("(DD/MM/YYYY)");
-        var cityCurrent = $("<h1>").text(response.name + " " + currentDate).attr("id", "cityName");
-        var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png");
-        var currentTemp = $("<p>").text("Temp: " + response.main.temp + " °C");
-        var windSpeed = $("<p>").text("Wind: " + response.wind.speed + "m/s");
-        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
-        $(cityCurrent).append(currentImage);
-        $(currentWeather).append(cityCurrent, currentTemp, windSpeed, humidity);
+            var currentDate = moment.unix(response.dt + response.timezone).format("(DD/MM/YYYY)");
+            var cityCurrent = $("<h1>").text(((response.name).charAt(0).toUpperCase() + (response.name).slice(1)) + " " + currentDate).attr("id", "cityName");
+            var currentImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.weather[0].icon + ".png");
+            var currentTemp = $("<p>").text(" Temp: " + response.main.temp + " °C").attr("class", "wi wi-thermometer");
+            var windSpeed = $("<p>").text(" Wind: " + response.wind.speed + "m/s").attr("class", "wi wi-strong-wind");
+            var humidity = $("<p>").text(" Humidity: " + response.main.humidity + "%").attr("class", "wi wi-humidity");
+            $(cityCurrent).append(currentImage);
+            $(currentWeather).append(cityCurrent, currentTemp, windSpeed, humidity);
     });
 }
 
@@ -122,9 +121,9 @@ function getForecast() {
             var forecastCard = $("<div>").addClass("col-md-2 p-3 mx-2 rounded").attr("id", "forecastCard");
             var forecastDate = $("<h4>").text(localDate);
             var forecastImage = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + ".png").attr("class", "justify-content-center");
-            var forecastTemp = $("<p>").text("Temp: " + response.list[i].main.temp + " °C");
-            var forecastWindspeed = $("<p>").text("Wind: " + response.list[i].wind.speed + "m/s");
-            var forecastHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity + "%");
+            var forecastTemp = $("<p>").text(" Temp: " + response.list[i].main.temp + " °C").attr("class", "wi wi-thermometer");
+            var forecastWindspeed = $("<p>").text(" Wind: " + response.list[i].wind.speed + "m/s").attr("class", "wi wi-strong-wind");
+            var forecastHumidity = $("<p>").text(" Humidity: " + response.list[i].main.humidity + "%").attr("class", "wi wi-humidity");
             $(forecastCard).append(forecastDate, forecastImage, forecastTemp, forecastWindspeed, forecastHumidity);
             $(forecastArea).append(forecastCard);
         }
@@ -135,7 +134,7 @@ function getForecast() {
 function renderButtons() {
     $("#history").empty();
     for (i = 0; i < cityArr.length; i++) {
-        var cityBtn = $("<button>").text(cityArr[i]).attr("id", cityArr[i]).addClass("btn btn-history my-1");
+        var cityBtn = $("<button>").text((cityArr[i]).charAt(0).toUpperCase() + (cityArr[i]).slice(1)).attr("id", cityArr[i]).addClass("btn btn-history my-1");
         $("#history").append(cityBtn);
     }
 }
@@ -154,5 +153,3 @@ function clearStorage() {
     window.localStorage.clear();
     cityArr = [];
 }
-
-
